@@ -3,6 +3,7 @@ import streamlit as st
 import openai
 from pytube import YouTube
 import whisper
+import os
 
 # Set OpenAI organization and API key from secrets
 openai.organization = st.secrets["openai"]["organization"]
@@ -25,14 +26,16 @@ class YouTubeTransummerizeAI:
 
     def transcribe_audio(self):
         model = whisper.load_model("base")
-        transcription = model.transcribe(self.audio_file)
+        transcription = model.transcribe(self.audio_file, fp16=False)
         self.transcribed_text = transcription["text"]
+        if os.path.exists("audio.mp3"):
+            os.remove("audio.mp3")
 
     def generate_summary(self):
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=self.transcribed_text + self.tldr_tag,
-            temperature=0.3,
+            temperature=0.2,
             max_tokens=200,
             top_p=1.0,
             frequency_penalty=0,
@@ -72,10 +75,11 @@ with st.container():
 
                 # Display the transcribed text and summary
                 st.write(yt_summary.transcribed_text)
-                st.subheader("Here is your summary!")
+                st.subheader("Voila the AI Transummerized TL;DR")
                 st.write(yt_summary.summary)
 
                 # Display a success message
                 st.success('Transummerization completed!')
         except Exception as error:
             print(error)
+
