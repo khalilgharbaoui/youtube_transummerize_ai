@@ -55,26 +55,27 @@ with st.container():
 
     # If a video URL is entered, start the summary process
     if video_url:
-        # Display a Streamlit spinner while the process is running
-        with st.spinner('Transummerization in progress...'):
-            # Create a YouTubeTransummerizeAI object
-            yt_summary = YouTubeTransummerizeAI(video_url)
+        try:
+            # Display a Streamlit spinner while the process is running
+            with st.spinner('Transummerization in progress...'):
+                # Create a YouTubeTransummerizeAI object
+                yt_summary = YouTubeTransummerizeAI(video_url)
 
-            # Download the audio file
-            yt_summary.download_audio()
+                # Download the audio file
+                yt_summary.download_audio()
 
-            # Transcribe the downloaded audio file
-            yt_summary.transcribe_audio()
+                # Transcribe the downloaded audio file
+                yt_summary.transcribe_audio()
 
-            # Generate a summary of the transcribed text
-            yt_summary.generate_summary()
+                # Generate a summary of the transcribed text
+                yt_summary.generate_summary()
 
-            # Display the transcribed text and summary
-            st.write(yt_summary.transcribed_text)
-            st.subheader("Here is your summary!")
-            st.write(yt_summary.summary)
+                # Display the transcribed text and summary
+                st.write(yt_summary.transcribed_text)
+                st.subheader("Here is your summary!")
+                st.write(yt_summary.summary)
 
-            # Display a success message
-            st.success('Transummerization completed!')
+                # Display a success message
+                st.success('Transummerization completed!')
         except Exception as error:
             print(error)
