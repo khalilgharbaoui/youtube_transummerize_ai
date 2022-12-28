@@ -14,7 +14,7 @@ class YouTubeTransummerizeAI:
     def __init__(self, video_url):
         self.video_url = video_url
         self.audio_file = "audio.mp3"
-        self.tldr_tag = "\n\nTL;DR"
+        self.tldr_tag = "\n\nTL;DR:"
         self.transcribed_text = ""
         self.summary = ""
 
